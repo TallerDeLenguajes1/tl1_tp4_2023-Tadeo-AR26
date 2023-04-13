@@ -11,6 +11,7 @@ struct Tarea{
 
 void cargarTareas(Tarea **TareasPendientes, int cant);
 void mostrarTareas(Tarea **TareasPendientes, int cant);
+void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 
 
 
@@ -22,7 +23,6 @@ int main(){
     TareasPendientes = malloc(sizeof(Tarea*)*cant);
     TareasRealizadas = malloc(sizeof(Tarea*)*cant);
     cargarTareas(TareasPendientes, cant);
-    printf("asda");
     mostrarTareas(TareasPendientes, cant);
     
 }
@@ -32,7 +32,7 @@ void cargarTareas(Tarea **TareasPendientes, int cant){
     int i;
     srand(time(NULL));
     for(i = 0; i<cant; i++){
-        TareasPendientes[i] = malloc(sizeof(Tarea)*cant);
+        TareasPendientes[i] = malloc(sizeof(Tarea));
         TareasPendientes[i]->TareaID = i+1;
         printf("Ingrese la descripcion de la tarea %d\n", i+1);
         fflush(stdin);
@@ -49,5 +49,19 @@ void mostrarTareas(Tarea **TareasPendientes, int cant){
         printf("Tarea Numero: %d\n", TareasPendientes[i]->TareaID);
         printf("Descripcion: %s\n", TareasPendientes[i]->Descripcion);
         printf("Duracion: %d\n", TareasPendientes[i]->Duracion);
+    }
+}
+
+void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant){
+    int i, j = 0;
+    for(i = 0; i < cant; i++){
+        int realz = 0;
+        printf("Realizo la tarea %d (1 Si, 0 No)", i+1);
+        scanf("%d", &realz);
+        if(realz == 1){
+            TareasRealizadas[j] = TareasPendientes[i];
+            TareasPendientes[i]= NULL;
+            j++;
+        }
     }
 }
