@@ -10,7 +10,7 @@ struct Tarea{
 } typedef Tarea;
 
 void cargarTareas(Tarea **TareasPendientes, int cant);
-void mostrarTareas(Tarea **TareasPendientes, int cant);
+void mostrarTareas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 
 
@@ -23,7 +23,8 @@ int main(){
     TareasPendientes = malloc(sizeof(Tarea*)*cant);
     TareasRealizadas = malloc(sizeof(Tarea*)*cant);
     cargarTareas(TareasPendientes, cant);
-    mostrarTareas(TareasPendientes, cant);
+    tareasRealizadas(TareasPendientes, TareasRealizadas, cant);
+    mostrarTareas(TareasPendientes, TareasRealizadas, cant);
     
 }
 
@@ -43,12 +44,19 @@ void cargarTareas(Tarea **TareasPendientes, int cant){
     }
 }
 
-void mostrarTareas(Tarea **TareasPendientes, int cant){
-    printf("asd");
-    for(int i = 0; i<cant; i++){
-        printf("Tarea Numero: %d\n", TareasPendientes[i]->TareaID);
-        printf("Descripcion: %s\n", TareasPendientes[i]->Descripcion);
-        printf("Duracion: %d\n", TareasPendientes[i]->Duracion);
+void mostrarTareas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant){
+    printf("***Tareas Pendientes***\n");
+    ///for(int i = 0; i<cant; i++){
+        printf("asdadaf");
+      ///  printf("Tarea Numero: %d\n", TareasPendientes[i]->TareaID);
+      ///  printf("Descripcion: %s\n", TareasPendientes[i]->Descripcion);
+      ///  printf("Duracion: %d\n", TareasPendientes[i]->Duracion);
+    //} 
+    printf("***Tareas Realizadas***\n");
+    for(int j = 0; j < cant; j++){
+        printf("Tarea Numero: %d\n", TareasRealizadas[j]->TareaID);
+        printf("Descripcion: %s\n", TareasRealizadas[j]->Descripcion);
+        printf("Duracion: %d\n", TareasRealizadas[j]->Duracion);
     }
 }
 
@@ -56,7 +64,7 @@ void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int ca
     int i, j = 0;
     for(i = 0; i < cant; i++){
         int realz = 0;
-        printf("Realizo la tarea %d (1 Si, 0 No)", i+1);
+        printf("Realizo la tarea %d (1 Si, 0 No)\n", i+1);
         scanf("%d", &realz);
         if(realz == 1){
             TareasRealizadas[j] = TareasPendientes[i];
