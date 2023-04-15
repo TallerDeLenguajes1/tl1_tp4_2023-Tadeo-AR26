@@ -22,6 +22,9 @@ int main(){
     scanf("%d",&cant);
     TareasPendientes = malloc(sizeof(Tarea*)*cant);
     TareasRealizadas = malloc(sizeof(Tarea*)*cant);
+    for(int i = 1; i < cant; i++){
+        TareasRealizadas[i] = NULL; //Inicializar en NULL para que no muestre basura en caso de estar vacio
+    }
     cargarTareas(TareasPendientes, cant);
     tareasRealizadas(TareasPendientes, TareasRealizadas, cant);
     mostrarTareas(TareasPendientes, TareasRealizadas, cant);
@@ -46,17 +49,16 @@ void cargarTareas(Tarea **TareasPendientes, int cant){
 
 void mostrarTareas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant){
     printf("***Tareas Pendientes***\n");
-    ///for(int i = 0; i<cant; i++){
-        printf("asdadaf");
-      ///  printf("Tarea Numero: %d\n", TareasPendientes[i]->TareaID);
-      ///  printf("Descripcion: %s\n", TareasPendientes[i]->Descripcion);
-      ///  printf("Duracion: %d\n", TareasPendientes[i]->Duracion);
-    //} 
+    for(int i = 0; i<cant; i++){ //controlo que el lugar adonde apunta no esté vacio
+        if(TareasPendientes[i] != NULL){
+            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasPendientes[i]->TareaID, TareasPendientes[i]->Descripcion, TareasPendientes[i]->Duracion);
+        }
+    } 
     printf("***Tareas Realizadas***\n");
     for(int j = 0; j < cant; j++){
-        printf("Tarea Numero: %d\n", TareasRealizadas[j]->TareaID);
-        printf("Descripcion: %s\n", TareasRealizadas[j]->Descripcion);
-        printf("Duracion: %d\n", TareasRealizadas[j]->Duracion);
+        if(TareasRealizadas[j] != NULL){ //controlo que el lugar adonde apunta no esté vacio
+            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasRealizadas[j]->TareaID, TareasRealizadas[j]->Descripcion, TareasRealizadas[j]->Duracion);
+        }
     }
 }
 
@@ -67,7 +69,7 @@ void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int ca
         printf("Realizo la tarea %d (1 Si, 0 No)\n", i+1);
         scanf("%d", &realz);
         if(realz == 1){
-            TareasRealizadas[j] = TareasPendientes[i];
+            TareasRealizadas[j] = TareasPendientes[i]; //Apunto ambos punteros a la misma posicion
             TareasPendientes[i]= NULL;
             j++;
         }
