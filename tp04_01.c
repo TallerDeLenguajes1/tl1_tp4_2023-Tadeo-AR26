@@ -13,6 +13,7 @@ void cargarTareas(Tarea **TareasPendientes, int cant);
 void mostrarTareas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 void liberarMemoria(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
+void buscarTarea(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant, int id);
 
 
 
@@ -88,4 +89,18 @@ void liberarMemoria(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant
     }
     free(TareasPendientes);
     free(TareasPendientes);
+}
+
+void buscarTarea(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant, int id){
+    int i;
+    for(i = 0; i<cant; i++){
+        if(TareasPendientes[i]->TareaID == id){
+            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasPendientes[i]->TareaID, TareasPendientes[i]->Descripcion, TareasPendientes[i]->Duracion);
+            printf("Estado: Realizada\n");
+        }
+        if(TareasRealizadas[i]->TareaID == id){
+            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasRealizadas[j]->TareaID, TareasRealizadas[j]->Descripcion, TareasRealizadas[j]->Duracion);
+            printf("Estado: Pendiente\n");
+        }
+    }
 }
