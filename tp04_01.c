@@ -12,6 +12,7 @@ struct Tarea{
 void cargarTareas(Tarea **TareasPendientes, int cant);
 void mostrarTareas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
+void liberarMemoria(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 
 
 
@@ -28,6 +29,7 @@ int main(){
     cargarTareas(TareasPendientes, cant);
     tareasRealizadas(TareasPendientes, TareasRealizadas, cant);
     mostrarTareas(TareasPendientes, TareasRealizadas, cant);
+    liberarMemoria(TareasPendientes, TareasRealizadas, cant);
     
 }
 
@@ -74,4 +76,16 @@ void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int ca
             j++;
         }
     }
+}
+
+void liberarMemoria(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant){
+    int i = 0;
+    for(i = 0; i < cant; i++){
+        free(TareasPendientes[i]->Descripcion);
+        free(TareasRealizadas[i]->Descripcion);
+        free(TareasPendientes[i]);
+        free(TareasRealizadas[i]);
+    }
+    free(TareasPendientes);
+    free(TareasPendientes);
 }
