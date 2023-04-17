@@ -99,7 +99,7 @@ void buscarTarea(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant, i
             printf("Estado: Realizada\n");
         }
         if(TareasRealizadas[i]->TareaID == id){
-            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasRealizadas[j]->TareaID, TareasRealizadas[j]->Descripcion, TareasRealizadas[j]->Duracion);
+            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasRealizadas[i]->TareaID, TareasRealizadas[i]->Descripcion, TareasRealizadas[i]->Duracion);
             printf("Estado: Pendiente\n");
         }
     }
