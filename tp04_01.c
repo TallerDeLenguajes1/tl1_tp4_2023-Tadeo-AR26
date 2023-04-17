@@ -13,11 +13,14 @@ void cargarTareas(Tarea **TareasPendientes, int cant);
 void mostrarTareas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 void tareasRealizadas(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
 void liberarMemoria(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant);
+void buscarTarea(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant, char *keyword);
+
 
 
 
 int main(){
     int cant;
+    char keyword[50];
     Tarea **TareasPendientes = NULL, **TareasRealizadas = NULL;
     printf("cuantas tareas desea cargar:\n");
     scanf("%d",&cant);
@@ -29,6 +32,10 @@ int main(){
     cargarTareas(TareasPendientes, cant);
     tareasRealizadas(TareasPendientes, TareasRealizadas, cant);
     mostrarTareas(TareasPendientes, TareasRealizadas, cant);
+    puts("Ingrese una palabra");
+    fflush(stdin);
+    scanf("%s", &keyword);
+    buscarTarea(TareasPendientes, TareasRealizadas, cant, keyword);
     liberarMemoria(TareasPendientes, TareasRealizadas, cant);
     
 }
@@ -88,4 +95,25 @@ void liberarMemoria(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant
     }
     free(TareasPendientes);
     free(TareasPendientes);
+}
+
+void buscarTarea(Tarea **TareasPendientes, Tarea **TareasRealizadas, int cant, char *keyWord){
+    int i;
+    char *tareaDescripcion1;
+    char *tareaDescripcion2;
+    for(i = 0; i<cant; i++){
+        if(TareasRealizadas[i] != NULL){
+            tareaDescripcion1 = strstr(TareasRealizadas[i]->Descripcion, keyWord);
+        }
+        if(TareasPendientes[i] != NULL){
+            tareaDescripcion2 = strstr(TareasPendientes[i]->Descripcion, keyWord);
+        }
+        printf("\nasd");
+        if(tareaDescripcion1 != NULL){
+            printf("%s", tareaDescripcion1);
+        }
+        if(tareaDescripcion2 != NULL){
+            printf("%s", tareaDescripcion2);
+        }
+    }
 }
