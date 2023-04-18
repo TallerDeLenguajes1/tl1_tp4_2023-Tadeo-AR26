@@ -55,12 +55,11 @@ Lista crearLista(){
 }
 
 Lista crearTarea(Lista TareasPendientes, int id){
-    fflush(stdin);
     struct Nodo *nuevo;
-    fflush(stdin);
     nuevo = malloc(sizeof(struct Nodo));
     nuevo->T = malloc(sizeof(struct Tarea));
     char buff[50];
+    
     nuevo->T->TareaID = id;
     printf("Ingrese una descripcion:\n");
     fflush(stdin);
@@ -69,8 +68,10 @@ Lista crearTarea(Lista TareasPendientes, int id){
     strcpy(nuevo->T->Descripcion, buff);
     srand(time(NULL));
     nuevo->T->Duracion = rand()%100+10;
+
     nuevo->siguiente = TareasPendientes;
     TareasPendientes = nuevo;
+
     return TareasPendientes;
 }
 
