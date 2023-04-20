@@ -19,16 +19,21 @@ typedef struct Nodo* Lista;
 Lista crearLista();
 Lista crearTarea(Lista TareasPendientes, int id);
 Lista insertarTarea(Lista Tareas, Lista TareasPendientes);
+Lista moverTarea(Lista Tareas, Lista TareasPendientes, int id);
+Lista eliminarTareas(Lista Tareas);
 void mostrarTareas(Lista TareasPendientes);
 void buscarID(Lista Tareas, int id);
 void buscarPalabra(Lista Tareas, char *keyword);
+void mostrarDatos(Lista Tareas, int *cant, int *tiempo);
 
 int main(){
-    Lista Tareas, TareasPendientes, TareasRealizadas, aux;
-    int opcion, id = 1, op = 0;;
+    Lista Tareas, TareasPendientes, TareasRealizadas, TareasEnProceso, aux;
+    int opcion, id = 1, op = 0, opd = 0, list = 0;
+    char mover[2];
     Tareas = crearLista();
     TareasPendientes = crearLista();
     TareasRealizadas = crearLista();
+    TareasEnProceso = crearLista();
     do{
         printf("\n***MENU***\n");
         printf("1- Crear una nueva Tarea\n");
@@ -82,8 +87,42 @@ int main(){
                 char keyword[50];
                 scanf("%s", &keyword);
                 buscarPalabra(Tareas, keyword);
+                break;
+            case 6:
+                while(mover != "n"){
+                    printf("Tareas\n");
+                    mostrarTareas(Tareas);
+                    printf("TareasPendientes:\n");
+                    mostrarTareas(TareasPendientes);
+                    printf("TareasRealizadas:\n");
+                    mostrarTareas(TareasRealizadas);
+                    printf("Ingrese un ID para seleccionar una tarea\n");
+                    scanf("%d", &id);
+                    printf("Operacion:\n1- Mover Tarea\n2- Eliminar Tarea\n 3-Nada\n");
+                    scanf("%d", &opd);
+                    switch(opd){
+                        case 1:
+                            printf("A qué lista desea moverla?\n1- Pendientes\n2- Realizadas\n3-En Proceso\n");
+                            switch(list){
+                                case 1:
+                                    TareasPendientes = moverTarea(Tareas, TareasPendientes, id);
+                                    break;
+                                case 2:
+                                    TareasRealizadas = moverTarea(Tareas, TareasRealizadas, id);
+                                    break;
+                                case 3:
+                                    TareasEnProceso = moverTarea(Tareas, TareasRealizadas, id);
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            printf("Eliminar Tarea");
+                    }
+                    printf("Desea continuar [y/n]");
+                    scanf("%c", &mover);
+                }
         }
-    }while(opcion != 6);
+    }while(opcion != 7);
 
     return 0;
 }
@@ -158,6 +197,34 @@ Lista insertarTarea(Lista Tareas, Lista TareasPendientes){
     nuevo->T->TareaID = Tareas->T->TareaID;
     nuevo->siguiente = TareasPendientes;
     TareasPendientes = nuevo;
+    
+    return TareasPendientes;
+}
+
+void mostrarDatos(Lista Tareas, int *cant, int *tiempo){
+    *cant = 0;
+    *tiempo = 0;
+    while(Tareas != NULL){
+        *cant = *cant+1;
+        *tiempo = *tiempo + Tareas->T->Duracion;
+        Tareas = Tareas->siguiente;
+    }
+}
+
+Lista moverTarea(Lista Tareas, Lista TareasPendientes, int id){
+    struct Nodo *nuevo;
+    nuevo = malloc(sizeof(struct Nodo));
+    nuevo->T = malloc(sizeof(struct Tarea));
+    while(Tareas != NULL){
+        if(Tareas->T->TareaID = id){
+            nuevo->T->Descripcion = Tareas->T->Descripcion;
+            nuevo->T->Duracion = Tareas->T->Duracion;
+            nuevo->T->TareaID = Tareas->T->TareaID;
+            nuevo->siguiente = TareasPendientes;
+            TareasPendientes = nuevo;
+        }
+        Tareas = Tareas->siguiente;
+    }
     
     return TareasPendientes;
 }
