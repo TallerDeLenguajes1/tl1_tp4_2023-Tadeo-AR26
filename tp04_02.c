@@ -18,14 +18,15 @@ typedef struct Nodo* Lista;
 
 Lista crearLista();
 Lista crearTarea(Lista TareasPendientes, int id);
+Lista insertarTarea(Lista Tareas, Lista TareasPendientes);
 void mostrarTareas(Lista TareasPendientes);
-Lista marcarRealizada(Lista TareasPendientes, Lista TareasRealizadas);
-void buscarID(Lista TareasPendientes, Lista TareasRealizadas, int id);
-void buscarPalabra(Lista TareasPendientes, Lista TareasRealizadas, char *keyword);
+void buscarID(Lista Tareas, int id);
+void buscarPalabra(Lista Tareas, char *keyword);
 
 int main(){
-    Lista TareasPendientes, TareasRealizadas;
-    int opcion, id = 1;
+    Lista Tareas, TareasPendientes, TareasRealizadas, aux;
+    int opcion, id = 1, op = 0;;
+    Tareas = crearLista();
     TareasPendientes = crearLista();
     TareasRealizadas = crearLista();
     do{
@@ -41,13 +42,29 @@ int main(){
         switch(opcion){
             case 1:
                 fflush(stdin);
-                TareasPendientes = crearTarea(TareasPendientes, id);
+                Tareas = crearTarea(Tareas, id);
                 id = id+1;
                 break;
             case 2:
-                TareasRealizadas = marcarRealizada(TareasPendientes, TareasRealizadas);
+                aux = Tareas;
+                while(aux != NULL){
+                    printf("¿Desea marcar Tarea: %d -- Descripcion: %s -- Duracion: %d como realizada?\n", aux->T->TareaID, aux->T->Descripcion, aux->T->Duracion);
+                    fflush(stdin);
+                    printf("1- Si\n2- No\n");
+                    scanf("%d", &op);
+                    if(op == 1){
+                        TareasRealizadas = insertarTarea(Tareas, TareasRealizadas);
+                        aux = aux->siguiente;  
+                    }
+                    else{
+                        TareasPendientes = insertarTarea(Tareas, TareasPendientes);
+                        aux = aux->siguiente;
+                    }
+                }
                 break;
             case 3:
+                printf("Tareas\n");
+                mostrarTareas(Tareas);
                 printf("TareasPendientes:\n");
                 mostrarTareas(TareasPendientes);
                 printf("TareasRealizadas:\n");
@@ -58,13 +75,13 @@ int main(){
                 int id;
                 fflush(stdin);
                 scanf("%d", &id);
-                buscarID(TareasPendientes, TareasRealizadas, id);
+                buscarID(Tareas, id);
                 break;
             case 5:
                 printf("Ingrese una palabra clave\n");
                 char keyword[50];
                 scanf("%s", &keyword);
-                buscarPalabra(TareasPendientes, TareasRealizadas, keyword);
+                buscarPalabra(Tareas, keyword);
         }
     }while(opcion != 6);
 
@@ -105,98 +122,42 @@ void mostrarTareas(Lista TareasPendientes){
     }
 }
 
-Lista marcarRealizada(Lista TareasPendientes, Lista TareasRealizadas){
-    int op = 0;
-    while(TareasPendientes != NULL){
-        printf("¿Desea marcar Tarea: %d -- Descripcion: %s -- Duracion: %d como realizada?\n", TareasPendientes->T->TareaID, TareasPendientes->T->Descripcion, TareasPendientes->T->Duracion);
-        fflush(stdin);
-        printf("1- Si\n2- No\n");
-        scanf("%d", &op);
-        if(op == 1){
-
-            //Copiar las Tareas Pendientes a las Realizadas 
-            struct Nodo *nuevo;
-            nuevo = malloc(sizeof(struct Nodo));
-            nuevo->T = malloc(sizeof(struct Tarea));
-            nuevo->T->Descripcion = TareasPendientes->T->Descripcion;
-            nuevo->T->Duracion = TareasPendientes->T->Duracion;
-            nuevo->T->TareaID = TareasPendientes->T->TareaID;
-            nuevo->siguiente = TareasRealizadas;
-            TareasRealizadas = nuevo;
-            TareasPendientes = TareasPendientes->siguiente;
-
-
-        
-
-            /* struct Nodo *actual, *anterior;
-            actual = TareasPendientes;
-            anterior = NULL;
-            while(actual != NULL){
-                if(actual->T->TareaID == TareasPendientes->T->TareaID){
-                    if(anterior == NULL){
-                        TareasPendientes = actual->siguiente;
-                    }else{
-                        anterior->siguiente = actual->siguiente;
-                    }
-                    free(actual->T->Descripcion);
-                    free(actual->T);
-                    free(actual);
-                    break;
-                }
-                anterior = actual;
-                actual = actual->siguiente;
-            } */
+void buscarID(Lista Tareas, int id){
+    while(Tareas != NULL){
+        if(Tareas->T->TareaID == id){
+            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", Tareas->T->TareaID, Tareas->T->Descripcion, Tareas->T->Duracion);
+            Tareas = Tareas->siguiente;
         }
         else{
-            TareasPendientes = TareasPendientes->siguiente;
+            Tareas = Tareas->siguiente;
         }
     }
-    return TareasRealizadas;
-}
-
-void buscarID(Lista TareasPendientes, Lista TareasRealizadas, int id){
-    while(TareasPendientes != NULL){
-        if(TareasPendientes->T->TareaID == id){
-            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasPendientes->T->TareaID, TareasPendientes->T->Descripcion, TareasPendientes->T->Duracion);
-            TareasPendientes = TareasPendientes->siguiente;
-        }
-        else{
-            TareasPendientes = TareasPendientes->siguiente;
-        }
-    }
-    while(TareasRealizadas != NULL){
-        if(TareasRealizadas->T->TareaID == id){
-            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasRealizadas->T->TareaID, TareasRealizadas->T->Descripcion, TareasRealizadas->T->Duracion);
-            TareasRealizadas = TareasRealizadas->siguiente;
-        }
-        else{
-            TareasRealizadas = TareasRealizadas->siguiente;
-        }
-    }  
 }
 
 
-void buscarPalabra(Lista TareasPendientes, Lista TareasRealizadas, char *keyword){
-    while(TareasPendientes != NULL){
+void buscarPalabra(Lista Tareas, char *keyword){
+    while(Tareas != NULL){
         char *tareaDescripcion;
-        tareaDescripcion = strstr(TareasPendientes->T->Descripcion, keyword);
+        tareaDescripcion = strstr(Tareas->T->Descripcion, keyword);
         if(tareaDescripcion != NULL){
-            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasPendientes->T->TareaID, TareasPendientes->T->Descripcion, TareasPendientes->T->Duracion);
-            TareasPendientes = TareasPendientes->siguiente;
+            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", Tareas->T->TareaID, Tareas->T->Descripcion, Tareas->T->Duracion);
+            Tareas = Tareas->siguiente;
         }
         else{
-            TareasPendientes = TareasPendientes->siguiente;
+            Tareas = Tareas->siguiente;
         }
     }
-    while(TareasRealizadas != NULL){
-        char *tareaDescripcion = NULL;
-        tareaDescripcion = strstr(TareasRealizadas->T->Descripcion, keyword);
-        if(tareaDescripcion != NULL){
-            printf("Tarea: %d -- Descripcion: %s -- Duracion: %d\n", TareasRealizadas->T->TareaID, TareasRealizadas->T->Descripcion, TareasRealizadas->T->Duracion);
-            TareasRealizadas = TareasRealizadas->siguiente;
-        }
-        else{
-            TareasRealizadas = TareasRealizadas->siguiente;
-        }
-    }
+}
+
+Lista insertarTarea(Lista Tareas, Lista TareasPendientes){
+    struct Nodo *nuevo;
+    nuevo = malloc(sizeof(struct Nodo));
+    nuevo->T = malloc(sizeof(struct Tarea));
+    nuevo->T->Descripcion = Tareas->T->Descripcion;
+    nuevo->T->Duracion = Tareas->T->Duracion;
+    nuevo->T->TareaID = Tareas->T->TareaID;
+    nuevo->siguiente = TareasPendientes;
+    TareasPendientes = nuevo;
+    
+    return TareasPendientes;
 }
