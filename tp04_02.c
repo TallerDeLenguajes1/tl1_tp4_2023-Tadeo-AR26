@@ -126,7 +126,7 @@ Lista marcarRealizada(Lista TareasPendientes, Lista TareasRealizadas){
             TareasPendientes = TareasPendientes->siguiente;
 
 
-            //Eliminar las TareasPendientes
+        
 
             /* struct Nodo *actual, *anterior;
             actual = TareasPendientes;
