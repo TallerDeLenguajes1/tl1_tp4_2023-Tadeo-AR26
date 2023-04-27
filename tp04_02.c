@@ -23,10 +23,11 @@ void mostrarTarea(Lista Tareas);
 void buscarTareaID(Lista TareasPendientes, Lista TareasRealizadas, int id);
 void buscarTareaKeyword(Lista TareasPendientes, Lista TareasRealizadas, char *keyword);
 void eliminarTareas(Lista Tareas, int id);
+int mostrarDatos(Lista Tareas);
 
 int main(){
     Lista TareasPendientes, TareasRealizadas, TareasEnProceso;
-    int opcion, id, num = 1;
+    int opcion, id, num = 1, t, tiempo;
     TareasPendientes = crearLista();    
     TareasRealizadas = crearLista();
     TareasEnProceso = crearLista();
@@ -73,9 +74,28 @@ int main(){
             case 6:
                 printf("Ingrese un ID para eliminar una tarea");
                 scanf("%d", &id);
-                eliminarTareas(TareasPendientes, id);          
+                eliminarTareas(TareasPendientes, id);
+                break;
+            case 7:
+                printf("Ingrese la lista para obtener el tiempo total asociado (1-Pendientes, 2-Realizadas, 3-En Proceso)\n");
+                scanf("%d", &t);
+                switch(t){
+                    case 1:
+                        tiempo = mostrarDatos(TareasPendientes);
+                        printf("El tiempo total de Tareas Pendientes es %d\n", tiempo);
+                        break;
+                    case 2:
+                        tiempo = mostrarDatos(TareasRealizadas);
+                        printf("El tiempo total de Tareas Realizadas es %d\n", tiempo);
+                        break;
+                    case 3:
+                        tiempo = mostrarDatos(TareasEnProceso);
+                        printf("El tiempo total de Tareas en Proceso es %d\n", tiempo);
+                        break;
+                }
+
         }
-    }while(opcion != 7);
+    }while(opcion != 8);
     return 0;
 }
 
@@ -205,4 +225,12 @@ void eliminarTareas(Lista Tareas, int id){
     }
     // libero el actual
     free(actual);
+}
+
+int mostrarDatos(Lista Tareas){
+    int tiempo;
+    while(Tareas != NULL){
+        tiempo += Tareas->T.Duracion;
+    }
+    return tiempo;
 }
