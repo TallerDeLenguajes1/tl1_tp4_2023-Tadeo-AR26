@@ -27,7 +27,8 @@ int mostrarDatos(Lista Tareas);
 
 int main(){
     Lista TareasPendientes, TareasRealizadas, TareasEnProceso;
-    int opcion, id, num = 1, t, tiempo;
+    int opcion, id, num = 1, t, tiempo, op, fuente, destino;
+    char *cont = "y";
     TareasPendientes = crearLista();    
     TareasRealizadas = crearLista();
     TareasEnProceso = crearLista();
@@ -40,6 +41,7 @@ int main(){
         printf("5- Buscar una tarea por palabra clave\n");
         printf("6- Borrar una Tarea\n");
         printf("7- Finalizar Programa\n");
+        printf("8- Operaciones\n");
         fflush(stdin);
         scanf("%d", &opcion);
         switch(opcion){
@@ -72,7 +74,7 @@ int main(){
                 buscarTareaKeyword(TareasPendientes, TareasRealizadas, keyword);
                 break;
             case 6:
-                printf("Ingrese un ID para eliminar una tarea");
+                printf("Ingrese un ID para eliminar una tarea\n");
                 scanf("%d", &id);
                 eliminarTareas(TareasPendientes, id);
                 break;
@@ -93,9 +95,49 @@ int main(){
                         printf("El tiempo total de Tareas en Proceso es %d\n", tiempo);
                         break;
                 }
+                break;
+            case 8:
+                while(cont != "n"){
+                    printf("Tareas Pendientes:\n");
+                    mostrarTarea(TareasPendientes);
+                    printf("Tareas Realizadas:\n");
+                    mostrarTarea(TareasRealizadas);
+                    printf("Tareas en Proceso\n");
+                    mostrarTarea(TareasEnProceso);
+                    printf("Ingrese el ID de la tarea que desea operar\n");
+                    scanf("%d", &id);
+                    printf("Ingrese una operacion\n\t1-Mover\n\t2-Eliminar\n");
+                    scanf("%d", &op);
+                    switch(op){
+                        case 1:
+                            printf("Ingrese hacia donde desea mover la tarea\n\t1-Pendientes\n\t2-Realizadas\n\t3-Proceso\n");
+                            scanf("%d", &destino);
+                            if(destino == 1){
+                                marcarTareaRealizada(&TareasRealizadas, &TareasPendientes, id);
+                                marcarTareaRealizada(&TareasEnProceso, &TareasPendientes, id);
+                            }
+                            if(destino == 2){
+                                marcarTareaRealizada(&TareasPendientes, &TareasRealizadas, id);
+                                marcarTareaRealizada(&TareasEnProceso, &TareasRealizadas, id);
+                            }
+                            if(destino == 3){
+                                marcarTareaRealizada(&TareasPendientes, &TareasEnProceso, id);
+                                marcarTareaRealizada(&TareasRealizadas, &TareasEnProceso, id);
+                            }
+                            break;
+                        case 2:
+                            eliminarTareas(TareasPendientes, id);
+                            eliminarTareas(TareasRealizadas, id);
+                            eliminarTareas(TareasEnProceso, id);
+                            break;
+                        }
+                    printf("Desea continuar? [y/n]\n");
+                    scanf("%s", &cont);
+                }
+                break;
 
         }
-    }while(opcion != 8);
+    }while(opcion != 9);
     return 0;
 }
 
