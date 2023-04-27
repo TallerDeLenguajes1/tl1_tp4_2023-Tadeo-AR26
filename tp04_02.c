@@ -40,8 +40,9 @@ int main(){
         printf("4- Buscar una tarea por ID\n");
         printf("5- Buscar una tarea por palabra clave\n");
         printf("6- Borrar una Tarea\n");
-        printf("7- Finalizar Programa\n");
+        printf("7- Mostrar tiempo total\n");
         printf("8- Operaciones\n");
+        printf("9- Finalizar\n");
         fflush(stdin);
         scanf("%d", &opcion);
         switch(opcion){
