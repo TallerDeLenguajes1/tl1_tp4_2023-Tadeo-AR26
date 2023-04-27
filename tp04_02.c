@@ -203,5 +203,6 @@ void eliminarTareas(Lista Tareas, int id){
             anterior->siguiente = actual->siguiente;
         }
     }
+    // libero el actual
     free(actual);
 }
