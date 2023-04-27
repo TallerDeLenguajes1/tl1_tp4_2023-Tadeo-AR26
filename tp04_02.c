@@ -22,12 +22,14 @@ void marcarTareaRealizada(Lista *TareasPendientes, Lista *TareasRealizadas, int 
 void mostrarTarea(Lista Tareas);
 void buscarTareaID(Lista TareasPendientes, Lista TareasRealizadas, int id);
 void buscarTareaKeyword(Lista TareasPendientes, Lista TareasRealizadas, char *keyword);
+void eliminarTareas(Lista Tareas, int id);
 
 int main(){
-    Lista TareasPendientes, TareasRealizadas;
+    Lista TareasPendientes, TareasRealizadas, TareasEnProceso;
     int opcion, id, num = 1;
-    TareasPendientes = crearLista();
+    TareasPendientes = crearLista();    
     TareasRealizadas = crearLista();
+    TareasEnProceso = crearLista();
     do{
         printf("\n***MENU***\n");
         printf("1- Crear una nueva Tarea\n");
@@ -35,7 +37,8 @@ int main(){
         printf("3- Mostrar las Tareas\n");
         printf("4- Buscar una tarea por ID\n");
         printf("5- Buscar una tarea por palabra clave\n");
-        printf("6- Finalizar Programa\n");
+        printf("6- Borrar una Tarea\n");
+        printf("7- Finalizar Programa\n");
         fflush(stdin);
         scanf("%d", &opcion);
         switch(opcion){
@@ -53,6 +56,8 @@ int main(){
                 mostrarTarea(TareasPendientes);
                 printf("Tareas Realizadas:\n");
                 mostrarTarea(TareasRealizadas);
+                printf("Tareas en Proceso\n");
+                mostrarTarea(TareasEnProceso);
                 break;
             case 4:
                 printf("Ingrese un ID para buscar\n");
@@ -64,9 +69,13 @@ int main(){
                 char keyword[50];
                 scanf("%s", &keyword);
                 buscarTareaKeyword(TareasPendientes, TareasRealizadas, keyword);
-                break;              
+                break;
+            case 6:
+                printf("Ingrese un ID para eliminar una tarea");
+                scanf("%d", &id);
+                eliminarTareas(TareasPendientes, id);          
         }
-    }while(opcion != 6);
+    }while(opcion != 7);
     return 0;
 }
 
@@ -173,4 +182,26 @@ void buscarTareaKeyword(Lista TareasPendientes, Lista TareasRealizadas, char *ke
             TareasRealizadas = TareasRealizadas->siguiente;
         }
     }
+}
+
+void eliminarTareas(Lista Tareas, int id){
+    Lista actual, anterior;
+    actual = Tareas;
+    anterior = NULL;
+
+    // Buscamos la tarea por su ID
+    while(actual != NULL && actual->T.TareaID != id){
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+
+    if(actual != NULL){
+        // Si encontramos la tarea
+        if(anterior == NULL){
+            Tareas = actual->siguiente;
+        }else{
+            anterior->siguiente = actual->siguiente;
+        }
+    }
+    free(actual);
 }
